@@ -44,9 +44,10 @@
                   (csv->clj)
                   (map #(select-keys % desired-columns))
                   (map #(reduce-kv (fn [m k v]
-                                     (assoc m k (if (= :problemBehaviors k)
-                                                  (str/replace v #"\"" "")
-                                                  v)))
+                                     (assoc m k
+                                            (if (some #{k} '(:problemBehaviors :actionsTaken))
+                                              (str/replace v #"\"" "")
+                                              v)))
                                    {}
                                    %))
                   (map #(into (sorted-map-by (fn [x y] (< (.indexOf desired-columns x)
