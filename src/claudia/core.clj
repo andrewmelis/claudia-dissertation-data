@@ -32,6 +32,13 @@
                        :actionsTaken
                        (keyword "Other Administrative Decision")])
 
+(defn maps->csv [path xs]
+  (let [headers (map name desired-columns)
+        rows (mapv #(mapv % desired-columns) xs)]
+    (with-open [file (io/writer path)]
+      (csv/write-csv file (cons headers rows)))))
+
+
 (defn do-it []
   (let [output-path "/tmp/claudia.csv"
         data (->> "resources/data.tsv"
@@ -43,4 +50,5 @@
                        ))
         ]
     (maps->csv output-path data)
+    ))
 
