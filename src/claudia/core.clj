@@ -157,6 +157,10 @@
 (defn seed-keys [keys m]
   (apply assoc m (interleave keys (repeat 0))))
 
+(defn increment-problem-behavior [m]
+  (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
+    (update m problem-behavior-category inc)))
+
 (defn do-it []
   (let [output-path "/tmp/wip-swis.csv"
         data (->> "resources/data.tsv"
@@ -181,6 +185,7 @@
                                                                     y-index)]
                                                  (< x-normalized y-normalized)))) %)) ; sort each row
                   )
+                  (map increment-problem-behavior))
         ]
     (maps->csv output-path data)
     ))
