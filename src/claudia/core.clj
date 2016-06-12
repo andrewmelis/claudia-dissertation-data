@@ -1,8 +1,8 @@
 (ns claudia.core
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]))
-
   (:require [clojure.data.csv :as csv]
+            [clojure.java.io :as io]
+            [clojure.string :as str]
+            [clojure.pprint :refer [pprint]]))
 
 (defn csv->clj [filename]
   (with-open [rdr (io/reader filename)]
