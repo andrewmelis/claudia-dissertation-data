@@ -182,16 +182,6 @@
                                                  (< x-normalized y-normalized)))) %)) ; sort each row
                   )
         ]
-    ;; (maps->csv output-path data)
-
-    ;; (comment
-      ;; (->>
-      ;;  (map :actionsTaken data)
-      ;;  distinct
-      ;;  sort
-      ;;  pprint
-      ;;  )
-      (nth data 7)
-      ;; )
+    (maps->csv output-path data)
     ))
 
