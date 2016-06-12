@@ -183,8 +183,8 @@
                                               (str/replace v #"\"" "")
                                               v)))
                                    {}
-                  (map #(seed-keys (vals problem-behaviors) %))
                                    %))
+                  (map #(seed-keys (distinct (vals problem-behaviors)) %))
                   (map increment-problem-behavior))
         ;; (map #(into (sorted-map-by sort-compare) %)) ; FIXME broken. blows away all but one key not in desired-columns map
         ]
