@@ -2,10 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+  (:require [clojure.data.csv :as csv]
 
 (defn csv->clj [filename]
   (with-open [rdr (io/reader filename)]
@@ -13,7 +10,7 @@
           headers (map keyword (str/split raw-headers #"\t"))
           raw-data (rest (line-seq rdr))
           data (doall (map  #(str/split % #"\t") raw-data))]
-      
+
       (comment (do
                  (println raw-headers)
                  (println headers)
