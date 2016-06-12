@@ -20,4 +20,25 @@
       (->> data
            (map #(zipmap headers %))))))
 
+(def desired-columns  [:referralId
+                       :studentReadableId
+                       :studentHasIep
+                       :studentHas504Plan
+                       :studentGenderId
+                       :studentGradeId
+                       :studentRaceEthnicity
+                       :studentDisabilities
+                       :problemBehaviors
+                       :actionsTaken
+                       (keyword "Other Administrative Decision")])
+
+(defn do-it []
+  (let [output-path "/tmp/claudia.csv"
+        data (->> "resources/data.tsv"
+                  (csv->clj)
+                  (map #(select-keys % desired-columns))
+                  (map #(into (sorted-map-by (fn [x y] (< (.indexOf desired-columns x)
+                       ))
+        ]
+    (maps->csv output-path data)
 
