@@ -153,6 +153,9 @@
    "Tobacco"                     "AlcoholTobaccoDrugs"         
    "Weapons"                     "ArsonBombWeapons"})
 
+(defn seed-keys [keys m]
+  (apply assoc m (interleave keys (repeat 0))))
+
 (defn do-it []
   (let [output-path "/tmp/wip-swis.csv"
         data (->> "resources/data.tsv"
@@ -165,6 +168,7 @@
                                               v)))
                                    {}
                                    %)) ; clean columns
+                  (map #(seed-keys (vals problem-behaviors) %))
                   (map #(into (sorted-map-by (fn [x y]
                                                (let [x-index (.indexOf desired-columns x)
                                                      y-index (.indexOf desired-columns y)
