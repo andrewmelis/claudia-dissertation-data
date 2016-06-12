@@ -44,6 +44,12 @@
         data (->> "resources/data.tsv"
                   (csv->clj)
                   (map #(select-keys % desired-columns))
+                  (map #(reduce-kv (fn [m k v]
+                                     (assoc m k (if (= :problemBehaviors k)
+                                                  (str/replace v #"\"" "")
+                                                  v)))
+                                   {}
+                                   %))
                   (map #(into (sorted-map-by (fn [x y] (< (.indexOf desired-columns x)
                                                           (.indexOf desired-columns y)))) %))
                   )
