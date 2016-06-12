@@ -49,11 +49,29 @@
                                               (str/replace v #"\"" "")
                                               v)))
                                    {}
-                                   %))
-                  (map #(into (sorted-map-by (fn [x y] (< (.indexOf desired-columns x)
-                                                          (.indexOf desired-columns y)))) %))
+                                   %)) ; clean columns
+                  (map #(into (sorted-map-by (fn [x y]
+                                               (let [x-index (.indexOf desired-columns x)
+                                                     y-index (.indexOf desired-columns y)
+                                                     x-normalized (if (= -1 x-index)
+                                                                    Integer/MAX_VALUE
+                                                                    x-index)
+                                                     y-normalized (if (= -1 y-index)
+                                                                    Integer/MAX_VALUE
+                                                                    y-index)]
+                                                 (< x-normalized y-normalized)))) %)) ; sort each row
                   )
         ]
-    (maps->csv output-path data)
+    ;; (maps->csv output-path data)
+
+    ;; (comment
+      ;; (->>
+      ;;  (map :actionsTaken data)
+      ;;  distinct
+      ;;  sort
+      ;;  pprint
+      ;;  )
+      (nth data 7)
+      ;; )
     ))
 
