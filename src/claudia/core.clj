@@ -161,6 +161,17 @@
   (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
     (update m problem-behavior-category inc)))
 
+(defn sort-compare [x y]
+  (let [x-index (.indexOf desired-columns x)
+        y-index (.indexOf desired-columns y)
+        x-normalized (if (= -1 x-index)
+                       Integer/MAX_VALUE
+                       x-index)
+        y-normalized (if (= -1 y-index)
+                       Integer/MAX_VALUE
+                       y-index)]
+    (< x-normalized y-normalized)))
+
 (defn do-it []
   (let [output-path "/tmp/wip-swis.csv"
         data (->> "resources/data.tsv"
@@ -174,18 +185,9 @@
                                    {}
                                    %)) ; clean columns
                   (map #(seed-keys (vals problem-behaviors) %))
-                  (map #(into (sorted-map-by (fn [x y]
-                                               (let [x-index (.indexOf desired-columns x)
-                                                     y-index (.indexOf desired-columns y)
-                                                     x-normalized (if (= -1 x-index)
-                                                                    Integer/MAX_VALUE
-                                                                    x-index)
-                                                     y-normalized (if (= -1 y-index)
-                                                                    Integer/MAX_VALUE
-                                                                    y-index)]
-                                                 (< x-normalized y-normalized)))) %)) ; sort each row
-                  )
+                                   %))
                   (map increment-problem-behavior))
+        ;; (map #(into (sorted-map-by sort-compare) %)) ; FIXME broken. blows away all but one key not in desired-columns map
         ]
     (maps->csv output-path data)
     ))
