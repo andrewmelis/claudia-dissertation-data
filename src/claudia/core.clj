@@ -183,7 +183,6 @@
                                               (str/replace v #"\"" "")
                                               v)))
                                    {}
-                                   %)) ; clean columns
                   (map #(seed-keys (vals problem-behaviors) %))
                                    %))
                   (map increment-problem-behavior))
