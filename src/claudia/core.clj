@@ -45,9 +45,8 @@
                   (csv->clj)
                   (map #(select-keys % desired-columns))
                   (map #(into (sorted-map-by (fn [x y] (< (.indexOf desired-columns x)
-                                                          (.indexOf desired-columns y)))) %)
-
-                       ))
+                                                          (.indexOf desired-columns y)))) %))
+                  )
         ]
     (maps->csv output-path data)
     ))
