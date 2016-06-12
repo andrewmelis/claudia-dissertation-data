@@ -38,9 +38,8 @@
     (with-open [file (io/writer path)]
       (csv/write-csv file (cons headers rows)))))
 
-
 (defn do-it []
-  (let [output-path "/tmp/claudia.csv"
+  (let [output-path "/tmp/wip-swis.csv"
         data (->> "resources/data.tsv"
                   (csv->clj)
                   (map #(select-keys % desired-columns))
