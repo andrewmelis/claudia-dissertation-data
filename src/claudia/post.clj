@@ -38,11 +38,11 @@
              m))
 
 (def int-keys [
-               ;; :Arrest
-               ;; :Bridges
-               ;; :OSS
-               ;; :OSSplusBridges
-               ;; :PoliceContact
+               :Arrest
+               :Bridges
+               :OSS
+               :OSSplusBridges
+               :PoliceContact
                ;; :actionsTaken
                :pbAlcoholTobaccoDrugs
                :pbArsonBombWeapons
@@ -58,32 +58,61 @@
                :pbOutBounds
                :pbPropDamage
                ;; :problemBehaviors
-               :referralId
+               ;; :referralId
                ;; :studentDisabilities
                ;; :studentGenderId
-               :studentGradeId
+               ;; :studentGradeId
                ;; :studentHas504Plan
                ;; :studentHasIep
                ;; :studentRaceEthnicity
-               :studentReadableId
+               ;; :studentReadableId
                ])
 
 (defn cast-int-fields [m]
   (reduce-kv (fn [m k v]
                (assoc m k (if (some #{k} int-keys)
-                            (int (bigdec v))
+                            (long (bigdec v))
                             v)))
              {}
              m))
 
+(defn merge-student-records [set]
+  (reduce (fn [x y]
+            (merge-with (fn [former latter]
+                          (if (number? former)
+                            (+ former latter)
+                            (if (seq? former)
+                              (conj former latter)
+                              (conj '() former latter))))
+                        x
+                        y))
+          set))
+
+(defn readable-seqs [m]
+  (reduce-kv (fn [m k v]
+               (assoc m
+                      k
+                      (if (and (seq? v)
+                               (apply = v))
+                        (first v)
+                        v)))
+             {} m))
+
 
 (defn do-it []
-  (let [data (->> "resources/post.tsv"
+  (let [output-path "/tmp/andrew-aggregated.csv"
+        data (->> "resources/post.tsv"
                   (csv->clj)
                   (map remove-extra-doublequotes)
-                  (map cast-int-fields))
+                  (map cast-int-fields)
+                  (map #(assoc % :numberOfReferrals 1)))
         indexed-data (set/index data [:studentReadableId])
+        reduced-data (->> (map #(merge-student-records (val %)) indexed-data)
+                          (map readable-seqs)
+                          )
         ]
-    indexed-data))
+    ;; reduced-data
+    (maps->csv output-path reduced-data)
+    
 
-
+    ))
