@@ -95,7 +95,8 @@
                       (if (and (seq? v)
                                (apply = v))
                         (first v)
-                        v)))
+                        (-> (str/replace (str v) #"\" \"" "\",\"")
+                            (str/replace #"[\(\)]" "")))))
              {} m))
 
 
@@ -113,6 +114,4 @@
         ]
     ;; reduced-data
     (maps->csv output-path reduced-data)
-    
-
     ))
