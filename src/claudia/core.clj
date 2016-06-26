@@ -161,18 +161,6 @@
   (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
     (update m problem-behavior-category inc)))
 
-(defn sort-compare [x y]
-  (let [x-index (.indexOf desired-columns x)
-;; ie "hydrate" referral event records
-        y-index (.indexOf desired-columns y)
-        x-normalized (if (= -1 x-index)
-                       Integer/MAX_VALUE
-                       x-index)
-        y-normalized (if (= -1 y-index)
-                       Integer/MAX_VALUE
-                       y-index)]
-    (< x-normalized y-normalized)))
-
 ;; adds counters for each category
 ;; "map" stage
 (defn do-it []
@@ -189,7 +177,6 @@
                                    %))
                   (map #(seed-keys (distinct (vals problem-behaviors)) %))
                   (map increment-problem-behavior))
-        ;; (map #(into (sorted-map-by sort-compare) %)) ; FIXME broken. blows away all but one key not in desired-columns map
         ]
     (maps->csv output-path data)
     ))
