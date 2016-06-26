@@ -11,9 +11,7 @@
     (->> (line-seq rdr)
          (map #(str/split % #"\t"))
          (flatten)
-         (apply assoc {})
-         (sort-by key)
-         (flatten))))
+         (apply assoc {}))))
 
 (defn load-tsv [filename]
   (with-open [rdr (io/reader filename)]
