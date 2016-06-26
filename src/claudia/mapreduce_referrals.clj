@@ -59,7 +59,7 @@
 
 (defn increment-problem-behavior
   ;; increment the key for the actual problem behavior recorded for the referral
-  [m]
+  [problem-behaviors m]
   (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
     (update m problem-behavior-category inc)))
 
@@ -68,7 +68,7 @@
   ;; "map" stage
   ;; ie "hydrate" referral event records
   ;; accepts sequence of referral maps
-  [xs]
+  [xs problem-behaviors]
   (->> xs
        (map #(select-keys % desired-columns)) ;; only keep desired columns
        (map #(reduce-kv (fn [m k v]
@@ -79,7 +79,7 @@
                         {}
                         %)) ;; clean up quotation marks in data
        (map #(seed-keys (distinct (vals problem-behaviors)) %)) ;; seed each record
-       (map increment-problem-behavior)
+       (map (partial increment-problem-behavior problem-behaviors))
        (map #(assoc % :numberOfReferrals 1)))) ;; differentiate each record
 
 (defn merge-student-records [set]
@@ -105,14 +105,23 @@
                             (str/replace #"[\(\)]" "")))))
              {} m))
 
-(defn process []
-  (let [output-path "/tmp/claudia-v3-wip/NEW-reduced-swis.csv"
-        raw-data (load-tsv "resources/raw-referral-data.tsv")
-        hydrated-data (hydrate-referral-event-records raw-data)
+(defn process [raw-data problem-behaviors]
+  (let [hydrated-data (hydrate-referral-event-records raw-data problem-behaviors)
         indexed-data (set/index hydrated-data [:studentReadableId])
         reduced-data (map #(merge-student-records (val %)) indexed-data)
         post-processed-data (map readable-seqs reduced-data)]
-    (maps->csv output-path post-processed-data)))
+    post-processed-data))
 
-(defn -main [& args]
-  (process))
+(defn -main
+  [& {:keys [problem-behavior-mapping-path
+             raw-data-path
+             output-path]
+      :or {problem-behavior-mapping-path "resources/default-problem-mapping.tsv"
+           raw-data-path "resources/raw-referral-data.tsv"
+           output-path "/tmp/referral-output.csv"}
+      :as args}]
+  (let [problem-behaviors (load-key-value-tsv problem-behavior-mapping-path)
+        raw-data (load-tsv raw-data-path)]
+    (maps->csv output-path
+               (process raw-data problem-behaviors))))
+
