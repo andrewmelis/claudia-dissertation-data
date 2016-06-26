@@ -38,25 +38,27 @@
              m))
 
 (def int-keys [
-               :Arrest
-               :Bridges
-               :OSS
-               :OSSplusBridges
-               :PoliceContact
+               :Alcohol
+               :Arson
+               :Bomb
+               :Bullying
+               :Defiance
+               :DisrespectDisruptionInappLan
+               :Drugs
+               :Fight
+               :GangDisplay
+               :Harassment
+               :InappAffection
+               :Lying
+               :OtherDressTech
+               :OutBounds
+               :PhysicalAgg
+               :PropDamage
+               :Stealing
+               :Tobacco
+               :Weapons
+               
                ;; :actionsTaken
-               :pbAlcoholTobaccoDrugs
-               :pbArsonBombWeapons
-               :pbBullyingHarass
-               :pbDisrespectDisruptionInappLan
-               :pbGangDisplay
-               :pbHITlying
-               :pbHIToppositional
-               :pbHITphysical
-               :pbHITstealing
-               :pbInappAffection
-               :pbOtherDressTech
-               :pbOutBounds
-               :pbPropDamage
                ;; :problemBehaviors
                ;; :referralId
                ;; :studentDisabilities
