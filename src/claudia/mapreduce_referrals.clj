@@ -6,6 +6,14 @@
             [clojure.pprint :refer [pprint]])
   (:gen-class))
 
+(defn load-key-value-tsv [filename]
+  (with-open [rdr (io/reader filename)]
+    (->> (line-seq rdr)
+         (map #(str/split % #"\t"))
+         (flatten)
+         (apply assoc {})
+         (sort-by key)
+         (flatten))))
 
 (defn load-tsv [filename]
   (with-open [rdr (io/reader filename)]
