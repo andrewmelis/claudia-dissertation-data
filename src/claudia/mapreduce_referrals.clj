@@ -105,15 +105,12 @@
     post-processed-data))
 
 (defn -main
-  [& {:keys [problem-behavior-mapping-path
-             raw-data-path
-             output-path]
-      :or {problem-behavior-mapping-path "resources/input/default-problem-behavior-mapping.tsv"
-           raw-data-path "resources/input/raw-referral-data.tsv"
-           output-path "resources/output/referral-output.csv"}
-      :as args}]
-  (let [problem-behaviors (load-key-value-tsv problem-behavior-mapping-path)
-        raw-data (load-tsv raw-data-path)]
+  [problem-behavior-mapping-path raw-data-path output-path]
+  (let [problem-behaviors (load-key-value-tsv (or problem-behavior-mapping-path
+                                                  "resources/input/default-problem-behavior-mapping.tsv"))
+        raw-data (load-tsv (or raw-data-path
+                               "resources/input/raw-referral-data.tsv"))
+        output-path (or output-path
+                        "resources/output/referral-output.csv")]
     (maps->csv output-path
                (process raw-data problem-behaviors))))
-
