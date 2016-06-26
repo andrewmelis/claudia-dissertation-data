@@ -172,6 +172,8 @@
                        y-index)]
     (< x-normalized y-normalized)))
 
+;; adds counters for each category
+;; "map" stage
 (defn do-it []
   (let [output-path "/tmp/wip-swis.csv"
         data (->> "resources/data.tsv"
