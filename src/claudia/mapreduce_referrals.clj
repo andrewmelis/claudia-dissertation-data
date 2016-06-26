@@ -71,8 +71,8 @@
                         {}
                         %)) ;; clean up quotation marks in data
        (map #(seed-keys (distinct (vals problem-behaviors)) %)) ;; seed each record
-       (map (partial increment-problem-behavior problem-behaviors))
-       (map #(assoc % :numberOfReferrals 1)))) ;; differentiate each record
+       (map (partial increment-problem-behavior problem-behaviors)) ;; differentiate each record
+       (map #(assoc % :numberOfReferrals 1))))
 
 (defn merge-student-records [set]
   (reduce (fn [x y]
