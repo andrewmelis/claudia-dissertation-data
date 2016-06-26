@@ -217,7 +217,7 @@
              {} m))
 
 (defn process []
-  (let [output-path "/tmp/claudia-v3-wip/reduced-swis.csv"
+  (let [output-path "/tmp/claudia-v3-wip/NEW-reduced-swis.csv"
         raw-data (load-tsv "resources/raw-referral-data.tsv")
         hydrated-data (hydrate-referral-event-records raw-data)
         indexed-data (set/index hydrated-data [:studentReadableId])
