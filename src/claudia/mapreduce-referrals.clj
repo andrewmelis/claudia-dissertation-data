@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [clojure.set :as set]
             [clojure.string :as str]
-            [clojure.pprint :refer [pprint]]))
+            [clojure.pprint :refer [pprint]])
+  (:gen-class))
 
 
 (defn load-tsv [filename]
@@ -223,3 +224,6 @@
         reduced-data (map #(merge-student-records (val %)) indexed-data)
         post-processed-data (map readable-seqs reduced-data)]
     (maps->csv output-path post-processed-data)))
+
+(defn -main [& args]
+  (process))
