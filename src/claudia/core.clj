@@ -176,7 +176,7 @@
 ;; "map" stage
 (defn do-it []
   (let [output-path "/tmp/wip-swis.csv"
-        data (->> "resources/data.tsv"
+        data (->> "resources/raw-referral-data.tsv"
                   (csv->clj)
                   (map #(select-keys % desired-columns))
                   (map #(reduce-kv (fn [m k v]
