@@ -21,6 +21,14 @@
            (map #(zipmap headers %))))))
 
 (def desired-columns  [:referralId
+(defn maps->csv [path xs]
+  (let [columns (keys (first xs))
+        headers (map name columns)
+        rows (mapv #(mapv % columns) xs)]
+    (with-open [file (io/writer path)]
+      (csv/write-csv file (cons headers rows)))))
+
+;; get rid of all columns except these
                        :studentReadableId
                        :studentHasIep
                        :studentHas504Plan
@@ -32,13 +40,7 @@
                        :actionsTaken
                        (keyword "Other Administrative Decision")])
 
-(defn maps->csv [path xs]
-  (let [columns (keys (first xs))
-        headers (map name columns)
-        rows (mapv #(mapv % columns) xs)]
-    (with-open [file (io/writer path)]
-      (csv/write-csv file (cons headers rows)))))
-
+;; TODO: extract these, mapping to be passed as argument
 (def problem-behaviors
   {"Alcohol"                     "pbAlcoholTobaccoDrugs"         
    "Arson"                       "pbArsonBombWeapons"            
