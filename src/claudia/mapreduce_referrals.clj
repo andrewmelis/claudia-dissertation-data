@@ -19,15 +19,7 @@
           headers (map keyword (str/split raw-headers #"\t"))
           raw-data (rest (line-seq rdr))
           data (doall (map #(str/split % #"\t") raw-data))]
-
-      (comment (do
-                 (println raw-headers)
-                 (println headers)
-                 (println (last raw-data))
-                 (println (last data))))
-
-      (->> data
-           (map #(zipmap headers %))))))
+      (map #(zipmap headers %) data))))
 
 (defn maps->csv [path xs]
   (let [columns (keys (first xs))
