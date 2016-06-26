@@ -70,6 +70,7 @@
                                    v)))
                         {}
                         %)) ;; clean up quotation marks in data
+       (map #(assoc % :numberOfReferrals 1))
        (map #(seed-keys (distinct (vals problem-behaviors)) %)) ;; seed each record
        (map increment-problem-behavior))) ;; differentiate each record
 
