@@ -163,21 +163,23 @@
 
 ;; adds counters for each category
 ;; "map" stage
-(defn do-it []
-  (let [output-path "/tmp/wip-swis.csv"
-        data (->> "resources/raw-referral-data.tsv"
-                  (csv->clj)
-                  (map #(select-keys % desired-columns))
-                  (map #(reduce-kv (fn [m k v]
-                                     (assoc m k
-                                            (if (some #{k} '(:problemBehaviors :actionsTaken))
-                                              (str/replace v #"\"" "")
-                                              v)))
-                                   {}
-                                   %))
-                  (map #(seed-keys (distinct (vals problem-behaviors)) %))
-                  (map increment-problem-behavior))
-        ]
-    (maps->csv output-path data)
-    ))
+;; ie "hydrate" referral event records
+;; accepts sequence of referral maps
+(defn hydrate-referral-event-records [xs]
+  (->> xs
+       (map #(select-keys % desired-columns))
+       (map #(reduce-kv (fn [m k v]
+                          (assoc m k
+                                 (if (some #{k} '(:problemBehaviors :actionsTaken))
+                                   (str/replace v #"\"" "")
+                                   v)))
+                        {}
+                        %))
+       (map #(seed-keys (distinct (vals problem-behaviors)) %))
+       (map increment-problem-behavior)))
 
+(defn map-stage []
+  (let [output-path "/tmp/v2-map-swis.csv"
+        raw-data (csv->clj "resources/raw-referral-data.tsv")
+        hydrated-data (hydrate-referral-event-records raw-data)]
+    (maps->csv output-path hydrated-data)))
