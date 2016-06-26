@@ -154,10 +154,17 @@
    "Tobacco"                     "pbAlcoholTobaccoDrugs"         
    "Weapons"                     "pbArsonBombWeapons"})
 
-(defn seed-keys [keys m]
+(defn seed-keys
+  ;; "initalize" each possible problem behavior category to 0
+  ;; standardizes each record to have a key for each possible behavior
+  ;; enables increment of actual problem behavior later
+  ;; then easy reduction of all referral maps by summing problem behavior keys
+  [keys m]
   (apply assoc m (interleave keys (repeat 0))))
 
-(defn increment-problem-behavior [m]
+(defn increment-problem-behavior
+  ;; increment the key for the actual problem behavior recorded for the referral
+  [m]
   (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
     (update m problem-behavior-category inc)))
 
