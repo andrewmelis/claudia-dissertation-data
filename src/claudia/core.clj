@@ -43,7 +43,8 @@
 
 ;; TODO: extract these, mapping to be passed as argument
 (def problem-behaviors
-  {"Alcohol"                     "pbAlcoholTobaccoDrugs"         
+  {
+   "Alcohol"                     "pbAlcoholTobaccoDrugs"         
    "Arson"                       "pbArsonBombWeapons"            
    "Bomb"                        "pbArsonBombWeapons"            
    "Bomb, Prop dam"              "pbArsonBombWeapons"            
@@ -155,7 +156,8 @@
    "Theft, Lying"                "pbHITstealing"                 
    "Theft, Out Bounds"           "pbHITstealing"                 
    "Tobacco"                     "pbAlcoholTobaccoDrugs"         
-   "Weapons"                     "pbArsonBombWeapons"})
+   "Weapons"                     "pbArsonBombWeapons"
+   })
 
 (defn seed-keys
   ;; "initalize" each possible problem behavior category to 0
