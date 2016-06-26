@@ -161,11 +161,12 @@
   (let [problem-behavior-category (get problem-behaviors (:problemBehaviors m))]
     (update m problem-behavior-category inc)))
 
-;; adds counters for each category
-;; "map" stage
-;; ie "hydrate" referral event records
-;; accepts sequence of referral maps
-(defn hydrate-referral-event-records [xs]
+(defn hydrate-referral-event-records
+  ;; adds counters for each category
+  ;; "map" stage
+  ;; ie "hydrate" referral event records
+  ;; accepts sequence of referral maps
+  [xs]
   (->> xs
        (map #(select-keys % desired-columns))
        (map #(reduce-kv (fn [m k v]
