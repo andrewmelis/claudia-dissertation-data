@@ -12,7 +12,7 @@
     (let [raw-headers (first (line-seq rdr))
           headers (map keyword (str/split raw-headers #"\t"))
           raw-data (rest (line-seq rdr))
-          data (doall (map  #(str/split % #"\t") raw-data))]
+          data (doall (map #(str/split % #"\t") raw-data))]
 
       (comment (do
                  (println raw-headers)
