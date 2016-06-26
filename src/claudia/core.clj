@@ -163,6 +163,7 @@
 
 (defn sort-compare [x y]
   (let [x-index (.indexOf desired-columns x)
+;; ie "hydrate" referral event records
         y-index (.indexOf desired-columns y)
         x-normalized (if (= -1 x-index)
                        Integer/MAX_VALUE
