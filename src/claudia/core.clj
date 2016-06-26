@@ -4,6 +4,7 @@
             [clojure.string :as str]
             [clojure.pprint :refer [pprint]]))
 
+;; technically this is a tsv not a csv
 (defn csv->clj [filename]
   (with-open [rdr (io/reader filename)]
     (let [raw-headers (first (line-seq rdr))
@@ -20,7 +21,6 @@
       (->> data
            (map #(zipmap headers %))))))
 
-(def desired-columns  [:referralId
 (defn maps->csv [path xs]
   (let [columns (keys (first xs))
         headers (map name columns)
@@ -29,6 +29,7 @@
       (csv/write-csv file (cons headers rows)))))
 
 ;; get rid of all columns except these
+(def desired-columns  [:referralId
                        :studentReadableId
                        :studentHasIep
                        :studentHas504Plan
