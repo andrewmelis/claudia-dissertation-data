@@ -108,9 +108,9 @@
   [& {:keys [problem-behavior-mapping-path
              raw-data-path
              output-path]
-      :or {problem-behavior-mapping-path "resources/default-problem-mapping.tsv"
-           raw-data-path "resources/raw-referral-data.tsv"
-           output-path "/tmp/referral-output.csv"}
+      :or {problem-behavior-mapping-path "resources/input/default-problem-behavior-mapping.tsv"
+           raw-data-path "resources/input/raw-referral-data.tsv"
+           output-path "resources/output/referral-output.csv"}
       :as args}]
   (let [problem-behaviors (load-key-value-tsv problem-behavior-mapping-path)
         raw-data (load-tsv raw-data-path)]
