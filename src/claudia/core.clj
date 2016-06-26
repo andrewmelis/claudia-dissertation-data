@@ -180,16 +180,16 @@
   ;; accepts sequence of referral maps
   [xs]
   (->> xs
-       (map #(select-keys % desired-columns))
+       (map #(select-keys % desired-columns)) ;; only keep desired columns
        (map #(reduce-kv (fn [m k v]
                           (assoc m k
                                  (if (some #{k} '(:problemBehaviors :actionsTaken))
                                    (str/replace v #"\"" "")
                                    v)))
                         {}
-                        %))
-       (map #(seed-keys (distinct (vals problem-behaviors)) %))
-       (map increment-problem-behavior)))
+                        %)) ;; clean up quotation marks in data
+       (map #(seed-keys (distinct (vals problem-behaviors)) %)) ;; seed each record
+       (map increment-problem-behavior))) ;; differentiate each record 
 
 (defn map-stage []
   (let [output-path "/tmp/claudia-v2/v2-map-swis.csv"
