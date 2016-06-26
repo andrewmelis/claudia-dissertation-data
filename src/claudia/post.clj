@@ -103,7 +103,7 @@
 ;; reduce stage
 ;; reduce referrals to collection for each student
 (defn do-it []
-  (let [output-path "/tmp/andrew-aggregated.csv"
+  (let [output-path "/tmp/claudia-v2/andrew-aggregated.csv"
         data (->> "resources/post.tsv"
                   (csv->clj)
                   (map remove-extra-doublequotes)

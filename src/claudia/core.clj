@@ -180,7 +180,7 @@
        (map increment-problem-behavior)))
 
 (defn map-stage []
-  (let [output-path "/tmp/v2-map-swis.csv"
+  (let [output-path "/tmp/claudia-v2/v2-map-swis.csv"
         raw-data (csv->clj "resources/raw-referral-data.tsv")
         hydrated-data (hydrate-referral-event-records raw-data)]
     (maps->csv output-path hydrated-data)))
